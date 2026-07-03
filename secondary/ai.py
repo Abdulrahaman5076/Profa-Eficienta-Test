@@ -11,10 +11,9 @@ import json
 #Database
 # =========================================================
 
-sqlite3.connect("/tmp/profu.db", check_same_thread=False)
+connect = sqlite3.connect("/tmp/profu.db", check_same_thread=False)
 
 connect.row_factory = sqlite3.Row
-
 db = connect.cursor()
 
 # =========================================================
