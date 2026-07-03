@@ -52,7 +52,7 @@ def after_request(response):
 # DATABASE & TABLES
 # =========================================================
 #profu.db e data baseu nu proful.db
-connect = sqlite3.connect("profu.db", check_same_thread=False)
+sqlite3.connect("/tmp/profu.db", check_same_thread=False)
 
 connect.row_factory = sqlite3.Row
 

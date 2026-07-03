@@ -11,7 +11,7 @@ import json
 #Database
 # =========================================================
 
-connect = sqlite3.connect("profu.db", check_same_thread=False)
+sqlite3.connect("/tmp/profu.db", check_same_thread=False)
 
 connect.row_factory = sqlite3.Row
 
