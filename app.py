@@ -16,7 +16,11 @@ from secondary import model_route
 import traceback
 
 app = Flask(__name__)
-os.makedirs("uploads", exist_ok=True)
+
+UPLOAD_FOLDER = "/tmp/uploads"
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 
@@ -325,9 +329,14 @@ def create_mode3():
     if not allowed_file(uploaded_file.filename):
         return apology("Tip de fișier nepermis", 400)
 
-    filename = secure_filename(uploaded_file.filename)
-    os.makedirs("uploads", exist_ok=True)          # ← safety net
-    uploaded_file.save(f"uploads/{filename}")
+    filename = f"{uuid.uuid4()}_{secure_filename(uploaded_file.filename)}"
+
+    os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
+
+    uploaded_file.save(
+        os.path.join(app.config["UPLOAD_FOLDER"], filename)
+    )
+
     db.execute(
         """
         INSERT INTO conversations (user_id, mode, title)
@@ -341,7 +350,7 @@ def create_mode3():
     conversation_id = db.lastrowid
 
     return redirect(f"/mode3/{conversation_id}")
-
+    
 def file_read(filepath):
     extension = os.path.splitext(filepath)[1].lower()
 
@@ -367,7 +376,16 @@ def file_read(filepath):
 @app.route("/mode3/<int:conversation_id>", methods=["GET", "POST"])
 @login_required
 def mode3(conversation_id):
-    return model_route.mode3_chat(db, connect, apology, conversation_id, file_read, "uploads")
+  
+  return model_route.mode3_chat(
+    db,
+    connect,
+    apology,
+    conversation_id,
+    file_read,
+    app.config["UPLOAD_FOLDER"]
+  )
+    
 #                                                                                    ^^^^^^^^^ add this
 
 # @app.route("/mode3", methods=["GET", "POST"])
