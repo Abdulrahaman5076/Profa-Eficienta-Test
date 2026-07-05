@@ -41,7 +41,8 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 def load_translations():
-    with open("translations.json", "r", encoding="utf-8") as file:
+    path = os.path.join(os.path.dirname(__file__), "translations.json")
+    with open(path, "r", encoding="utf-8") as file:
         return json.load(file)
 
 translations = load_translations()
