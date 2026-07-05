@@ -11,8 +11,22 @@ from werkzeug.security import check_password_hash, generate_password_hash
 #mode3
 from PyPDF2 import PdfReader
 from docx import Document
-from secondary import ai, docs, ocr, accounts
+print("accounts...")
+from secondary import accounts
+
+print("ai...")
+from secondary import ai
+
+print("docs...")
+from secondary import docs
+
+print("ocr...")
+from secondary import ocr
+
+print("model_route...")
 from secondary import model_route
+
+print("done")
 import traceback
 
 app = Flask(__name__)

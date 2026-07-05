@@ -5,3 +5,5 @@ flask_session/
 uploads/
 *.db
 venv/
+.vercel
+.env*
