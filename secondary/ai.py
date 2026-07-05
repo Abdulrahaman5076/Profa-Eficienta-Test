@@ -19,25 +19,19 @@ db = connect.cursor()
 # =========================================================
 # LOAD ENV
 # =========================================================
+from dotenv import load_dotenv
+import os
 
-load_dotenv(dotenv_path=Path(__file__).parent.parent / ".env")
-load_dotenv(dotenv_path=Path(__file__).parent / ".env")
-
-api_key = os.getenv("GEMINI_API_KEY")
-
-client = None
-
+load_dotenv()  # Only used locally
 
 def get_client():
-    global client
+    api_key = os.getenv("GEMINI_API_KEY")
 
-    if client is None:
-        if not api_key:
-            raise RuntimeError(
-                "AI nu este configurat. Adauga GEMINI_API_KEY in fisierul .env."
-            )
+    if not api_key:
+        raise RuntimeError("GEMINI_API_KEY is missing.")
 
-        client = genai.Client(api_key=api_key)
+    return genai.Client(api_key=api_key)
+
 
     return client
 
